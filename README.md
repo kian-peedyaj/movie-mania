@@ -42,7 +42,7 @@ Movies List Page
 
 ### Back-End
 
-- Supabase (Backend as a Servie)
+- Supabase (Backend as a Service)
 
 ### Deployment
 
