@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { createClient } from "@/utils/supabase/client";
-import { LogOutIcon, PowerOffIcon } from "lucide-react";
+import { PowerOffIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function LogoutButton() {
