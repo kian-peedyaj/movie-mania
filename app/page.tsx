@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dashboard } from "./components/Dashboard";
+import { Dashboard } from "./components/Home";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function Home() {
