@@ -1,9 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { LogInIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export async function LogIn() {
+export function LoginButton() {
   const router = useRouter();
 
   return (

@@ -1,39 +1,15 @@
-// "use client"
+import * as React from "react";
+import { Dashboard } from "./components/Dashboard";
+import { createClient } from "@/utils/supabase/server";
 
-import * as React from "react"
-import Link from "next/link"
+export default async function Home() {
+  const supabase = createClient();
 
-// import { cn } from "@/lib/utils"
-// import { Icons } from "@/components/icons"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import { Dashboard } from "./components/dashboard"
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export default function Home() {
-  return <main>
-    <Dashboard />
-    {/* <div className="flex items-center p-4 gap-4">
-      <h5 className="font-extrabold text-xl">
-        Movie Mania
-      </h5>
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <Link href="/" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Home
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-    </div> */}
-  </main>
+  console.log("@@@ user", user);
+
+  return <Dashboard user={user} />;
 }

@@ -1,20 +1,17 @@
 import Link from "next/link";
-import { Search, Clapperboard, LogInIcon } from "lucide-react";
+import { Search, Clapperboard } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Favorites } from "./favorites";
-import { LogOut } from "./logout";
-import { createClient } from "@/utils/supabase/server";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/router";
-import { LogIn } from "./login";
+import { FavoritesButton } from "./FavoritesButton";
+import { LogoutButton } from "./LogoutButton";
+import { LoginButton } from "./LoginButton";
+import MovieCard from "./MovieCard";
+import MovieList from "./MovieList";
 
-export async function Dashboard() {
-  const supabase = createClient();
+interface Props {
+  user: any;
+}
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+export async function Dashboard({ user }: Props) {
   return (
     <div className="grid min-h-screen w-full">
       <div className="border-r bg-muted/40">
@@ -24,14 +21,14 @@ export async function Dashboard() {
               <Clapperboard className="h-6 w-6" />
               <span className="">Movie Mania</span>
             </Link>
-            <div className="ml-auto flex gap-4">
+            <div className="ml-auto flex">
               {user && (
                 <>
-                  <Favorites />
-                  <LogOut />
+                  <FavoritesButton />
+                  <LogoutButton />
                 </>
               )}
-              {!user && <LogIn />}
+              {!user && <LoginButton />}
             </div>
           </div>
           <div className="flex-1">
@@ -49,6 +46,9 @@ export async function Dashboard() {
                 </form>
               </div>
             </header>
+            <main>
+              <MovieList />
+            </main>
           </div>
         </div>
       </div>

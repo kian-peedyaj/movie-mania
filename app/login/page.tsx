@@ -14,11 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
-import { LockKeyholeOpenIcon } from "lucide-react";
+import { LockKeyhole, LockKeyholeOpenIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Spinner } from "@/components/ui-expansion/spinner";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -37,6 +38,8 @@ export default function SignUp() {
     },
   });
   const { toast } = useToast();
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+  const [isSpinnerVisible, setIsSpinnerVisible] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,6 +53,7 @@ export default function SignUp() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<any> {
+    setIsSpinnerVisible(true);
     const supabase = createClient();
     let { data, error } = await supabase.auth.signInWithPassword({
       email: values.email,
@@ -61,8 +65,13 @@ export default function SignUp() {
         title: error.message,
         variant: "destructive",
       });
+      setIsSpinnerVisible(false);
     } else {
-      router.push("/");
+      setIsLoginSuccess(true);
+      setTimeout(() => {
+        router.push("/");
+        setIsSpinnerVisible(false);
+      }, 3000);
     }
   }
 
@@ -73,7 +82,11 @@ export default function SignUp() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-md p-4  rounded-lg space-y-8"
         >
-          <LockKeyholeOpenIcon className="mx-auto" />
+          {isLoginSuccess ? (
+            <LockKeyholeOpenIcon className="mx-auto" size={100} />
+          ) : (
+            <LockKeyhole className="mx-auto" size={100} />
+          )}
 
           <FormField
             control={form.control}
@@ -100,12 +113,14 @@ export default function SignUp() {
             )}
           />
           <Button className="w-full" type="submit" size={"lg"}>
-            Log In
+            {isSpinnerVisible && <Spinner className="text-black" />} Log In
           </Button>
         </form>
       </Form>
-      OR
-      <Link href="/">Click here, To continue as a Guest.</Link>
+      <strong>
+        <h1>OR</h1>
+      </strong>
+      <Link href="/">Click here, to continue as a Guest.</Link>
     </div>
   );
 }
