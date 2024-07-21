@@ -1,122 +1,97 @@
-"use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { createClient } from "@/utils/supabase/client";
-import { LockKeyhole, LockKeyholeOpenIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useToast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
+import { headers } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import { SubmitButton } from "./submit-button";
+import { revalidatePath } from "next/cache";
+import { LockKeyhole } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui-expansion/spinner";
 
-const formSchema = z.object({
-  email: z.string().email({
-    message: "Please provide a valid email id.",
-  }),
-  password: z.string().min(6, "Password must be of atleast 6 characters."),
-});
+export default function Login({
+  searchParams,
+}: {
+  searchParams: { message: string };
+}) {
+  const signIn = async (formData: FormData) => {
+    "use server";
 
-export default function SignUp() {
-  const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-  const { toast } = useToast();
-  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
-  const [isSpinnerVisible, setIsSpinnerVisible] = useState(false);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) router.push("/");
-    };
-    fetchUser();
-  });
-
-  async function onSubmit(values: z.infer<typeof formSchema>): Promise<any> {
-    setIsSpinnerVisible(true);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
     const supabase = createClient();
-    let { data, error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
+
     if (error) {
-      console.error(error);
-      toast({
-        title: error.message,
-        variant: "destructive",
-      });
-      setIsSpinnerVisible(false);
-    } else {
-      setIsLoginSuccess(true);
-      setTimeout(() => {
-        router.push("/");
-        setIsSpinnerVisible(false);
-      }, 3000);
+      return redirect("/login?message=Could not authenticate user");
     }
-  }
+    revalidatePath("/", "layout");
+    redirect("/");
+  };
+
+  // const signUp = async (formData: FormData) => {
+  //   "use server";
+
+  //   const origin = headers().get("origin");
+  //   const email = formData.get("email") as string;
+  //   const password = formData.get("password") as string;
+  //   const supabase = createClient();
+
+  //   const { error } = await supabase.auth.signUp({
+  //     email,
+  //     password,
+  //     options: {
+  //       emailRedirectTo: `${origin}/auth/callback`,
+  //     },
+  //   });
+
+  //   if (error) {
+  //     return redirect("/login?message=Could not authenticate user");
+  //   }
+
+  //   return redirect("/login?message=Check email to continue sign in process");
+  // };
 
   return (
     <div className="flex flex-col justify-center items-center h-screen">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full max-w-md p-4  rounded-lg space-y-8"
+      <form className="w-full max-w-md p-4  rounded-lg space-y-8">
+        <LockKeyhole className="mx-auto" size={100} />
+        <Input
+          // className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          name="email"
+          placeholder="you@example.com"
+          required
+        />
+        <Input
+          // className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          type="password"
+          name="password"
+          placeholder="••••••••"
+          required
+        />
+        <SubmitButton
+          formAction={signIn}
+          className="w-full"
+          pendingText={<Spinner className="text-black" />}
         >
-          {isLoginSuccess ? (
-            <LockKeyholeOpenIcon className="mx-auto" size={100} />
-          ) : (
-            <LockKeyhole className="mx-auto" size={100} />
-          )}
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder="Email address" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder="Password" type="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button className="w-full" type="submit" size={"lg"}>
-            {isSpinnerVisible && <Spinner className="text-black" />} Log In
-          </Button>
-        </form>
-      </Form>
+          Sign In
+        </SubmitButton>
+        {/* <SubmitButton
+          formAction={signUp}
+          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+          pendingText="Signing Up..."
+        >
+          Sign Up
+        </SubmitButton> */}
+        {searchParams?.message && (
+          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+            {searchParams.message}
+          </p>
+        )}
+      </form>
       <strong>
         <h1>OR</h1>
       </strong>
