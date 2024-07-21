@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import { revalidatePath } from "next/cache";
 import { LockKeyhole } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui-expansion/spinner";
+import supaHelper from "@/utils/supabase/supabase-helper";
 
 export default function Login({
   searchParams,
@@ -18,16 +18,12 @@ export default function Login({
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
+    const error = await new supaHelper().signIn(email, password);
     if (error) {
       return redirect("/login?message=Could not authenticate user");
     }
+
     revalidatePath("/", "layout");
     redirect("/");
   };
@@ -75,7 +71,7 @@ export default function Login({
         <SubmitButton
           formAction={signIn}
           className="w-full"
-          pendingText={<Spinner className="text-black" />}
+          pendingText={<Spinner className="text-background" />}
         >
           Sign In
         </SubmitButton>

@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/server";
-import { PowerOffIcon } from "lucide-react";
 import { redirect } from "next/navigation";
+import { PowerOffIcon } from "lucide-react";
+import supaHelper from "@/utils/supabase/supabase-helper";
 
 export function LogoutButton() {
   const signOut = async () => {
     "use server";
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    await new supaHelper().signOut();
     return redirect("/login");
   };
 
@@ -18,7 +17,7 @@ export function LogoutButton() {
         size="icon"
         className="h-8 w-full p-2 bg-transparent hover:bg-transparent"
       >
-        <PowerOffIcon color="white" />
+        <PowerOffIcon className="text-foreground" />
       </Button>
     </form>
   );
