@@ -1,5 +1,5 @@
 import tmdb from "@/utils/tmdb";
-import MovieCard from "./movie-card";
+import MovieCard from "./movie-card/movie-card";
 
 export default async function MovieList() {
   const { results } = (await tmdb.fetchTopRated()) || [];
