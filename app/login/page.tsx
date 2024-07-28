@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import { revalidatePath } from "next/cache";
 import { LockKeyhole } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui-expansion/spinner";
-import supaHelper from "@/utils/supabase/supabase-helper";
+import { createClient } from "@/utils/supabase/server";
 
 export default function Login({
   searchParams,
@@ -19,8 +18,13 @@ export default function Login({
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const error = await new supaHelper().signIn(email, password);
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) {
+      console.error(error);
       return redirect("/login?message=Could not authenticate user");
     }
 

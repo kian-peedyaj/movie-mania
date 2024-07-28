@@ -1,14 +1,23 @@
-import tmdb from "@/utils/tmdb";
 import MovieCard from "./movie-card/movie-card";
+import { Movie, Movies } from "@/types/common";
 
-export default async function MovieList() {
-  const { results } = (await tmdb.fetchTopRated()) || [];
-
+const MovieList: React.FC<{
+  movies: Movies;
+  showAddButton?: boolean;
+  showRemoveButton?: boolean;
+}> = async ({ movies, showAddButton = false, showRemoveButton = false }) => {
   return (
     <div className="flex flex-wrap flex-row m-4">
-      {results.map((movie: any) => (
-        <MovieCard key={movie.id} movie={movie} />
+      {movies.map((movie: Movie) => (
+        <MovieCard
+          key={movie.id}
+          movie={movie}
+          showAddButton={showAddButton}
+          showRemoveButton={showRemoveButton}
+        />
       ))}
     </div>
   );
-}
+};
+
+export default MovieList;

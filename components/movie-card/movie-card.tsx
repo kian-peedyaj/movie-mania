@@ -1,12 +1,13 @@
 import { Card } from "@/components/ui/card";
-import supaHelper from "@/utils/supabase/supabase-helper";
 import { AddButton } from "./add-button";
-import { Movie } from "@/interfaces/common";
+import { Movie } from "@/types/common";
+import { RemoveButton } from "./remove-button";
 
-const MovieCard: React.FC<{ movie: Movie }> = async ({ movie }) => {
-  const user: any = await new supaHelper(true).getUser();
-  const { is_admin = false } = user;
-
+const MovieCard: React.FC<{
+  movie: Movie;
+  showAddButton: boolean;
+  showRemoveButton: boolean;
+}> = async ({ movie, showAddButton = false, showRemoveButton = false }) => {
   return (
     <div className="w-1/2 xs sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 p-2 ">
       <Card
@@ -15,7 +16,8 @@ const MovieCard: React.FC<{ movie: Movie }> = async ({ movie }) => {
           backgroundImage: `url(${process.env.NEXT_PUBLIC_TMDB_IMAGE_URL}/${movie.poster_path})`,
         }}
       >
-        {is_admin && <AddButton movie={movie} />}
+        {showAddButton && <AddButton movie={movie} />}
+        {showRemoveButton && <RemoveButton id={movie.id} />}
         <div className="p-2 bg-slate-700 bg-opacity-40 text-white">
           {movie.title}
         </div>
