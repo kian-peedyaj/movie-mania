@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation";
 export const AddButton: React.FC<{ movie: Movie }> = ({ movie }) => {
   const { showToast } = useCustomToast();
   const router = useRouter();
-  const handleAdd = async () => {
+  const handleAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     const { isSuccess, message } = await insertMovie(movie);
     if (isSuccess) {
       router.refresh();
@@ -29,7 +30,7 @@ export const AddButton: React.FC<{ movie: Movie }> = ({ movie }) => {
   return (
     <Button
       onClick={handleAdd}
-      className="absolute top-0 right-0 size-sm bg-foreground opacity-50 hover:opacity-100"
+      className="absolute top-0 right-0 size-sm bg-background opacity-50 text-foreground hover:bg-background hover:opacity-80"
     >
       <Plus />
     </Button>

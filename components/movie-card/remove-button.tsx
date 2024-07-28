@@ -1,8 +1,7 @@
 "use client";
 
 import { Button } from "../ui/button";
-import { Movie } from "@/types/common";
-import { deleteMovie, insertMovie } from "@/utils/supabase/tables/movies";
+import { deleteMovie } from "@/utils/supabase/tables/movies";
 import { useCustomToast } from "@/hooks/useCustomToast";
 import { Minus } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -10,7 +9,8 @@ import { useRouter } from "next/navigation";
 export const RemoveButton: React.FC<{ id: string }> = ({ id }) => {
   const { showToast } = useCustomToast();
   const router = useRouter();
-  const handleRemove = async () => {
+  const handleRemove = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     const { isSuccess, message } = await deleteMovie(id);
     if (isSuccess) {
       router.refresh();
@@ -29,7 +29,7 @@ export const RemoveButton: React.FC<{ id: string }> = ({ id }) => {
   return (
     <Button
       onClick={handleRemove}
-      className="absolute top-0 right-0 size-sm bg-foreground opacity-50 hover:opacity-100"
+      className="absolute top-0 right-0 size-sm bg-background opacity-50 text-foreground hover:bg-background hover:opacity-80"
     >
       <Minus />
     </Button>

@@ -34,3 +34,12 @@ export const deleteMovie = async (id: string) => {
   }
   return result;
 };
+
+export const fetchMovieById = async (id: string) => {
+  const supabase = createClient();
+  const { data, error } = await supabase.from("movies").select().eq("id", id);
+  if (error) {
+    return {};
+  }
+  return data?.[0] || {};
+};

@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Movie } from "@/types/common";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { useRouter, useSearchParams } from "next/navigation";
+import { fetchMovieById } from "@/utils/supabase/tables/movies";
 
 interface MovieDisplayPageProps {
   movie: Movie;
 }
 
-const MovieDisplayPage: React.FC<MovieDisplayPageProps> = ({ movie }) => {
+const MovieDisplayPage = () => {
+  const router = useRouter();
+  const searchParam = useSearchParams();
+  const [movie, setMovie] = useState<Movie | null>(null);
+
+  useEffect(() => {
+    const data = searchParam.get("data");
+    if (data) {
+      const movieData = JSON.parse(decodeURIComponent(data));
+      setMovie(movieData);
+    } else {
+      const id = window.location.pathname.split("/").pop() || "";
+      fetchMovieById(id).then((data) => {
+        setMovie(data);
+      });
+    }
+  }, [searchParam]);
+
+  if (!movie) {
+    return "Loading...";
+  }
+
   return (
     <div
       className="relative bg-cover bg-center h-screen"
