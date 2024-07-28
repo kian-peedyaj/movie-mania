@@ -25,7 +25,7 @@ const MovieCard: React.FC<{
         style={{
           backgroundImage: `url(${process.env.NEXT_PUBLIC_TMDB_IMAGE_URL}/${movie.poster_path})`,
         }}
-        onClick={(e) => handleCardClick(e)}
+        onClick={handleCardClick}
       >
         {showAddButton && <AddButton movie={movie} />}
         {showRemoveButton && <RemoveButton id={movie.id} />}
