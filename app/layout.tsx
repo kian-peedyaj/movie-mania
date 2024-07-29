@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { getIsAdmin } from "@/utils/supabase/supa-helper";
+import { getIsAdmin } from "@/utils/supabase/supa-helper-server";
 import MainHeader from "@/components/main-header";
 
 const inter = Inter({ subsets: ["latin"] });

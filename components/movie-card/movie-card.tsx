@@ -15,7 +15,7 @@ const MovieCard: React.FC<{
 
   const handleCardClick = () => {
     const movieData = encodeURIComponent(JSON.stringify(movie));
-    router.push(`/movie/${movie.id}?data=${movieData}`);
+    router.push(`/movie/${movie.id}?data=${movieData}&addButton=collection`);
   };
 
   return (
@@ -27,7 +27,12 @@ const MovieCard: React.FC<{
         }}
         onClick={handleCardClick}
       >
-        {showAddButton && <AddButton movie={movie} />}
+        {showAddButton && (
+          <AddButton
+            movie={movie}
+            customClasses="absolute top-0 right-0 size-sm bg-background opacity-50 text-foreground hover:bg-background hover:opacity-80"
+          />
+        )}
         {showRemoveButton && <RemoveButton id={movie.id} />}
         <div className="p-2 bg-slate-700 bg-opacity-40 text-white">
           {movie.title}

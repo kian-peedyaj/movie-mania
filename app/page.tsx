@@ -1,4 +1,4 @@
-import { getUser } from "@/utils/supabase/supa-helper";
+import { getUser } from "@/utils/supabase/supa-helper-server";
 import { MainTabs } from "@/components/main-tabs";
 
 export default async function Home() {

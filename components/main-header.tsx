@@ -3,10 +3,11 @@ import { Clapperboard } from "lucide-react";
 import { FavoritesButton } from "@/components/favorites-button";
 import { LogoutButton } from "@/components/logout-button";
 import { LoginButton } from "@/components/login-button";
-import { getUser } from "@/utils/supabase/supa-helper";
+import { getIsAdmin, getUser } from "@/utils/supabase/supa-helper-server";
 
 export default async function MainHeader() {
   const user = await getUser();
+  const isAdmin = await getIsAdmin();
   return (
     <header className="flex flex-col sticky top-0 z-50 bg-muted  shadow-md">
       <div className="flex items-center px-6 py-3">
@@ -17,7 +18,7 @@ export default async function MainHeader() {
         <div className="ml-auto flex">
           {user && (
             <>
-              <FavoritesButton />
+              {!isAdmin && <FavoritesButton />}
               <LogoutButton />
             </>
           )}

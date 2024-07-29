@@ -12,7 +12,7 @@ export const useCustomToast = () => {
           <div style={{ marginRight: "12px" }}>
             {props.variant === "destructive" ? <CircleX /> : <Info />}
           </div>
-          <text>{text}</text>
+          <p>{text}</p>
         </span>
       );
     };

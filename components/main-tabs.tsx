@@ -6,7 +6,7 @@ export const MainTabs = () => {
   return (
     <Tabs defaultValue="movie-collection" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="movie-collection">Movie List</TabsTrigger>
+        <TabsTrigger value="movie-collection">Collection</TabsTrigger>
         <TabsTrigger value="tmdb-movies">Explore & add</TabsTrigger>
       </TabsList>
       <TabsContent value="movie-collection">

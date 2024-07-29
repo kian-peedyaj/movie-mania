@@ -5,11 +5,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { fetchMovieById } from "@/utils/supabase/tables/movies";
 import Image from "next/image";
 import { ArrowLeftIcon } from "lucide-react";
+import { AddButton } from "@/components/movie-card/add-button";
+import { getIsAdmin } from "@/utils/supabase/supa-helper";
 
 const MovieDisplayPage = () => {
   const router = useRouter();
   const searchParam = useSearchParams();
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     const data = searchParam.get("data");
@@ -24,6 +27,12 @@ const MovieDisplayPage = () => {
     }
   }, [searchParam]);
 
+  useEffect(() => {
+    getIsAdmin().then((is_admin) => {
+      setIsAdmin(is_admin);
+    });
+  });
+
   if (!movie) {
     return "Loading...";
   }
@@ -34,7 +43,7 @@ const MovieDisplayPage = () => {
 
   return (
     <div className="bg-opacity-30 min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6">
-      <header className="mb-6 flex items-center">
+      <header className="mb-6 flex items-center justify-between">
         <button
           onClick={handleBackClick}
           className="flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
@@ -42,23 +51,26 @@ const MovieDisplayPage = () => {
           <ArrowLeftIcon className="w-5 h-5 mr-2" />
           <span className="text-lg font-medium">Back</span>
         </button>
+        {isAdmin && <AddButton movie={movie} caption="Add to Collection" />}
       </header>
-      <main>
+      <main className="p-6">
         <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
           Release Date: {new Date(movie.release_date).toLocaleDateString()}
         </p>
-        <Image
-          alt={movie.title}
-          className="w-full sm:w-40 h-auto my-6 rounded-lg"
-          src={`${process.env.NEXT_PUBLIC_TMDB_IMAGE_URL}/${movie.poster_path}`}
-          height={300}
-          width={300}
-        />
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Overview</h2>
-          <p className="text-base leading-relaxed">{movie.overview}</p>
-        </section>
+        <div className="flex flex-col sm:flex-row">
+          <Image
+            alt={movie.title}
+            className="w-full sm:w-40 md:w-full h-auto my-6 rounded-lg"
+            src={`${process.env.NEXT_PUBLIC_TMDB_IMAGE_URL}/${movie.poster_path}`}
+            height={300}
+            width={300}
+          />
+          <section className="p-0 sm:p-5">
+            <h2 className="text-2xl font-semibold mb-4">Overview</h2>
+            <p className="text-base leading-relaxed">{movie.overview}</p>
+          </section>
+        </div>
       </main>
     </div>
   );

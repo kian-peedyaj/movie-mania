@@ -7,7 +7,11 @@ import { insertMovie } from "@/utils/supabase/tables/movies";
 import { useCustomToast } from "@/hooks/useCustomToast";
 import { useRouter } from "next/navigation";
 
-export const AddButton: React.FC<{ movie: Movie }> = ({ movie }) => {
+export const AddButton: React.FC<{
+  movie: Movie;
+  customClasses?: string;
+  caption?: string;
+}> = ({ movie, customClasses = "", caption = "" }) => {
   const { showToast } = useCustomToast();
   const router = useRouter();
   const handleAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,11 +32,8 @@ export const AddButton: React.FC<{ movie: Movie }> = ({ movie }) => {
     }
   };
   return (
-    <Button
-      onClick={handleAdd}
-      className="absolute top-0 right-0 size-sm bg-background opacity-50 text-foreground hover:bg-background hover:opacity-80"
-    >
-      <Plus />
+    <Button onClick={handleAdd} className={customClasses}>
+      <Plus /> {caption}
     </Button>
   );
 };
