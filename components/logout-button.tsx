@@ -1,15 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
 import { PowerOffIcon } from "lucide-react";
-import { createClient } from "@/utils/supabase/server";
+import { signOut } from "./actions";
 
 export function LogoutButton() {
-  const signOut = async () => {
-    "use server";
-    await createClient().auth.signOut();
-    return redirect("/login");
-  };
-
   return (
     <form action={signOut}>
       <Button

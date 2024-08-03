@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { ChangeEvent } from "react";
 
 type SearchBoxProps = {
-  onChange: (e: ChangeEvent) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const SearchBox: React.FC<SearchBoxProps> = (props: SearchBoxProps) => {

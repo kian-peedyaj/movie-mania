@@ -10,10 +10,12 @@ const MovieList: React.FC<{
   showRemoveButton?: boolean;
 }> = ({ movies, showAddButton = false, showRemoveButton = false }) => {
   const [filteredMovies, setFilteredMovies] = useState<Movies>([]);
+
   useEffect(() => {
     setFilteredMovies(movies);
   }, [movies]);
-  const handleSearch = (e: ChangeEvent) => {
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const searchText = e?.target?.value || "";
     setFilteredMovies(
       movies.filter((movie) =>
@@ -21,6 +23,7 @@ const MovieList: React.FC<{
       )
     );
   };
+
   return (
     <div>
       <SearchBox onChange={handleSearch}></SearchBox>
