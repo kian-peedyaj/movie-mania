@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 
-export async function FavoritesButton() {
+export async function MainFavoritesButton() {
   return (
     <Button
       variant="default"

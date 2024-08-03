@@ -9,6 +9,7 @@ export const getUser = async () => {
 export const getIsAdmin = async () => {
   const supabase = createClient();
   const user = await getUser();
+  if (!user) return false;
   const { data: usersData }: any = await supabase
     .from("user_profiles")
     .select("*")

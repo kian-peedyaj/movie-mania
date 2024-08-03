@@ -6,7 +6,7 @@ import { useCustomToast } from "@/hooks/useCustomToast";
 import { Minus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export const RemoveButton: React.FC<{ id: string }> = ({ id }) => {
+export const RemoveButton: React.FC<{ id: number }> = ({ id }) => {
   const { showToast } = useCustomToast();
   const router = useRouter();
   const handleRemove = async (event: React.MouseEvent<HTMLButtonElement>) => {

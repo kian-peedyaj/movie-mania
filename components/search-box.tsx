@@ -2,13 +2,28 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-type SearchBoxProps = {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-};
+// type SearchBoxProps = {
+//   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+// };
 
-export const SearchBox: React.FC<SearchBoxProps> = (props: SearchBoxProps) => {
-  const { onChange } = props;
+// export const SearchBox: React.FC<SearchBoxProps> = (props: SearchBoxProps) => {
+export const SearchBox = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  function handleSearch(term: string) {
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set("query", term);
+    } else {
+      params.delete("query");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
+
   return (
     <div className="w-full flex-1 pt-2 pb-5">
       <div className="relative">
@@ -17,7 +32,8 @@ export const SearchBox: React.FC<SearchBoxProps> = (props: SearchBoxProps) => {
           type="search"
           placeholder="Search"
           className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-          onChange={onChange}
+          onChange={(e) => handleSearch(e.target.value)}
+          defaultValue={searchParams.get("query")?.toString()}
         />
       </div>
     </div>

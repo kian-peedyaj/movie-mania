@@ -1,44 +1,41 @@
-"use client";
 import MovieCard from "./movie-card/movie-card";
 import { Movie, Movies } from "@/types/common";
 import { SearchBox } from "./search-box";
-import { ChangeEvent, useEffect, useState } from "react";
+import { getUsersFavouriteMovies } from "@/utils/supabase/tables/favourites-server";
 
 const MovieList: React.FC<{
   movies: Movies;
   showAddButton?: boolean;
   showRemoveButton?: boolean;
-}> = ({ movies, showAddButton = false, showRemoveButton = false }) => {
-  const [filteredMovies, setFilteredMovies] = useState<Movies>([]);
-
-  useEffect(() => {
-    setFilteredMovies(movies);
-  }, [movies]);
-
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const searchText = e?.target?.value || "";
-    setFilteredMovies(
-      movies.filter((movie) =>
-        movie.title.toLowerCase().includes(searchText.toLowerCase())
-      )
-    );
-  };
-
+  showFavouriteButton?: boolean;
+  isFavourite?: boolean;
+}> = async ({
+  movies,
+  showAddButton = false,
+  showRemoveButton = false,
+  showFavouriteButton = false,
+}) => {
+  const favouriteMovies = (await getUsersFavouriteMovies()) || [];
   return (
     <div>
-      <SearchBox onChange={handleSearch}></SearchBox>
+      <SearchBox />
       <div className="flex flex-wrap flex-row m-4">
-        {filteredMovies?.map((movie: Movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            showAddButton={showAddButton}
-            showRemoveButton={showRemoveButton}
-          />
-        ))}
+        {movies?.map((movie: Movie) => {
+          const isFavourite = favouriteMovies?.includes(movie?.id) || false;
+          return (
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              showAddButton={showAddButton}
+              showRemoveButton={showRemoveButton}
+              showFavouriteButton={showFavouriteButton}
+              isFavourite={isFavourite}
+              favourites={favouriteMovies}
+            />
+          );
+        })}
       </div>
     </div>
   );
 };
-
 export default MovieList;

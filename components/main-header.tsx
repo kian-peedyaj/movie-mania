@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Clapperboard } from "lucide-react";
-import { FavoritesButton } from "@/components/favorites-button";
+import { MainFavoritesButton } from "@/components/main-favorites-button";
 import { LogoutButton } from "@/components/logout-button";
 import { LoginButton } from "@/components/login-button";
 import { getIsAdmin, getUser } from "@/utils/supabase/supa-helper-server";
@@ -18,7 +18,7 @@ export default async function MainHeader() {
         <div className="ml-auto flex">
           {user && (
             <>
-              {!isAdmin && <FavoritesButton />}
+              {!isAdmin && <MainFavoritesButton />}
               <LogoutButton />
             </>
           )}

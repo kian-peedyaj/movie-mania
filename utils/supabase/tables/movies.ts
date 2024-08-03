@@ -21,11 +21,11 @@ export const insertMovie = async (movie: Movie) => {
   return result;
 };
 
-export const deleteMovie = async (id: string) => {
+export const deleteMovie = async (id: number) => {
   const supabase = createClient();
   const { status } = await supabase.from("movies").delete().eq("id", id);
   const result = { isSuccess: false, message: "" };
-  if (status === RESPONSE_STATUS.DELETED) {
+  if (status === RESPONSE_STATUS.UPDATED) {
     result.isSuccess = true;
     result.message = "Movie removed from collection.";
   } else {
@@ -35,7 +35,7 @@ export const deleteMovie = async (id: string) => {
   return result;
 };
 
-export const fetchMovieById = async (id: string) => {
+export const fetchMovieById = async (id: number) => {
   const supabase = createClient();
   const { data, error } = await supabase.from("movies").select().eq("id", id);
   if (error) {

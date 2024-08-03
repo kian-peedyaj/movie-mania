@@ -7,12 +7,14 @@ import Image from "next/image";
 import { ArrowLeftIcon } from "lucide-react";
 import { AddButton } from "@/components/movie-card/add-button";
 import { getIsAdmin } from "@/utils/supabase/supa-helper";
+import { FavoritesButton } from "@/components/movie-card/favorites-button";
 
 const MovieDisplayPage = () => {
   const router = useRouter();
   const searchParam = useSearchParams();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isFavourite, setIsFavourite] = useState<boolean>(false);
 
   useEffect(() => {
     const data = searchParam.get("data");
@@ -20,18 +22,19 @@ const MovieDisplayPage = () => {
       const movieData = JSON.parse(decodeURIComponent(data));
       setMovie(movieData);
     } else {
-      const id = window.location.pathname.split("/").pop() || "";
-      fetchMovieById(id).then((data) => {
+      const id = window.location.pathname.split("/").pop() || "0";
+      fetchMovieById(Number(id)).then((data) => {
         setMovie(data);
       });
     }
+    setIsFavourite(searchParam.get("fav") === "true" || false);
   }, [searchParam]);
 
   useEffect(() => {
     getIsAdmin().then((is_admin) => {
       setIsAdmin(is_admin);
     });
-  });
+  }, []);
 
   if (!movie) {
     return "Loading...";
@@ -51,7 +54,17 @@ const MovieDisplayPage = () => {
           <ArrowLeftIcon className="w-5 h-5 mr-2" />
           <span className="text-lg font-medium">Back</span>
         </button>
-        {isAdmin && <AddButton movie={movie} caption="Add to Collection" />}
+        {isAdmin ? (
+          <AddButton movie={movie} caption="Add to Collection" />
+        ) : (
+          <FavoritesButton
+            id={movie.id}
+            // showCaption
+            isFavourite={isFavourite}
+            // favourites={favourites}
+            // getFavourites={getFavourites}
+          />
+        )}
       </header>
       <main className="p-6">
         <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>

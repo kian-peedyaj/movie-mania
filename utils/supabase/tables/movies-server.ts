@@ -8,5 +8,8 @@ export const fetchMovies = async () => {
   if (error) {
     return [];
   }
-  return data;
+  const results = data?.map((movie) => {
+    return movie.movie_details || {};
+  });
+  return results;
 };
