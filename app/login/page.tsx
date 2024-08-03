@@ -6,6 +6,7 @@ import { LockKeyhole } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui-expansion/spinner";
 import { createClient } from "@/utils/supabase/server";
+import { getIsAdmin } from "@/utils/supabase/supa-helper-server";
 
 export default function Login({
   searchParams,
@@ -27,9 +28,14 @@ export default function Login({
       console.error(error);
       return redirect("/login?message=Could not authenticate user");
     }
-
-    revalidatePath("/", "layout");
-    redirect("/");
+    const isAdmin = await getIsAdmin();
+    if (isAdmin) {
+      revalidatePath("/dashboard/admin", "layout");
+      redirect("/dashboard/admin");
+    } else {
+      revalidatePath("/dashboard", "layout");
+      redirect("/dashboard");
+    }
   };
 
   // const signUp = async (formData: FormData) => {
@@ -95,7 +101,7 @@ export default function Login({
       <strong>
         <h1>OR</h1>
       </strong>
-      <Link href="/">Click here, to continue as a Guest.</Link>
+      <Link href="/dashboard">Click here, to continue as a Guest.</Link>
     </div>
   );
 }
