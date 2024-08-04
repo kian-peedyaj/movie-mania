@@ -1,13 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Movie } from "@/types/common";
 import { useRouter, useSearchParams } from "next/navigation";
-import { fetchMovieById } from "@/utils/supabase/tables/movies";
 import Image from "next/image";
 import { ArrowLeftIcon } from "lucide-react";
-import { AddButton } from "@/components/movie-card/add-button";
+import { Movie } from "@/types/common";
+import { fetchMovieById } from "@/utils/supabase/tables/movies";
 import { getIsAdmin } from "@/utils/supabase/supa-helper";
-import Loading from "@/app/loading";
+import { AddButton } from "@/components/movie-card/add-button";
 
 const MovieDisplayPage = () => {
   const router = useRouter();
@@ -37,7 +36,7 @@ const MovieDisplayPage = () => {
   }, []);
 
   if (!movie) {
-    return <Loading />;
+    return "Loading...";
   }
 
   const handleBackClick = () => {

@@ -28,8 +28,8 @@ const fetchFromTMBD = async (type: REQUEST_TYPE) => {
       .NEXT_PUBLIC_TMDB_API_URL!}/3/movie/${param}?api_key=${process.env
       .NEXT_PUBLIC_TMDB_API_KEY!}
 `);
-    const data = await response.json();
-    return data;
+    const { results } = await response.json();
+    return results;
   } catch (error) {
     console.error("Error fetching movie data:", error);
   }

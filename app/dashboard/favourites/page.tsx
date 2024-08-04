@@ -17,9 +17,10 @@ export default async function Favourites({
     favouriteMovies?.includes(movie?.id)
   );
   return (
-    <div>
-      <h1 className="text-2xl mx-6">Your Favourites</h1>
-      <MovieList movies={filteredMovies} showFavouriteButton={true} />
-    </div>
+    <MovieList
+      title="Your Favourites"
+      movies={filteredMovies}
+      showFavouriteButton={true}
+    />
   );
 }

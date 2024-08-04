@@ -7,12 +7,8 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const adminUser = await getIsAdmin();
   const adminURL = url.pathname.includes("/admin");
-  if (adminUser !== adminURL) {
-    if (adminUser) {
-      url.pathname = "/dashboard/admin";
-    } else {
-      url.pathname = "/dashboard";
-    }
+  if (!adminUser && adminURL) {
+    url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
   return updatedRequest;

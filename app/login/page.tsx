@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui-expansion/spinner";
 import { createClient } from "@/utils/supabase/server";
 import { getIsAdmin } from "@/utils/supabase/supa-helper-server";
+import { LoginTestToggle } from "./login-test-toggle";
 
 export default function Login({
   searchParams,
@@ -30,8 +31,8 @@ export default function Login({
     }
     const isAdmin = await getIsAdmin();
     if (isAdmin) {
-      revalidatePath("/dashboard/admin", "layout");
-      redirect("/dashboard/admin");
+      revalidatePath("/admin/dashboard", "layout");
+      redirect("/admin/dashboard");
     } else {
       revalidatePath("/dashboard", "layout");
       redirect("/dashboard");
@@ -65,19 +66,7 @@ export default function Login({
     <div className="flex flex-col justify-center items-center h-screen">
       <form className="w-full max-w-md p-4  rounded-lg space-y-8">
         <LockKeyhole className="mx-auto" size={100} />
-        <Input
-          // className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <Input
-          // className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
+        <LoginTestToggle />
         <SubmitButton
           formAction={signIn}
           className="w-full"

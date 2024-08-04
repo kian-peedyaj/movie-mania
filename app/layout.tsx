@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { getIsAdmin } from "@/utils/supabase/supa-helper-server";
 import MainHeader from "@/components/main-header";
 import { Suspense } from "react";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,7 @@ export default async function RootLayout({
           <div className="min-h-screen w-full">
             <MainHeader />
             {/*suspense not working*/}
-            <Suspense fallback={<h1>Loading...</h1>}>
+            <Suspense fallback={<Loading />}>
               <div className="mt-6 mx-6">{children}</div>
             </Suspense>
           </div>

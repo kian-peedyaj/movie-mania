@@ -1,27 +1,34 @@
-import MovieCard from "./movie-card/movie-card";
+import { MovieCard } from "./movie-card/movie-card";
 import { Movie, Movies } from "@/types/common";
 import { SearchBox } from "./search-box";
 import { getUsersFavouriteMovies } from "@/utils/supabase/tables/favourites-server";
 
 const MovieList: React.FC<{
+  title?: string;
   movies: Movies;
   showAddButton?: boolean;
   showRemoveButton?: boolean;
   showFavouriteButton?: boolean;
   isFavourite?: boolean;
+  hideSearch?: boolean;
 }> = async ({
+  title = "",
   movies,
   showAddButton = false,
   showRemoveButton = false,
   showFavouriteButton = false,
+  hideSearch = false,
 }) => {
   const favouriteMovies = (await getUsersFavouriteMovies()) || [];
 
   return (
-    <div>
-      <div className="mx-6 my-4">
-        <SearchBox />
-      </div>
+    <div className="mt-8">
+      <h1 className="text-2xl mx-6 my-4 font-extrabold">{title}</h1>
+      {!hideSearch && (
+        <div className="mx-6 my-4">
+          <SearchBox />
+        </div>
+      )}
       <div className="flex flex-wrap flex-row m-4">
         {movies?.map((movie: Movie) => {
           const isFavourite = favouriteMovies?.includes(movie?.id) || false;

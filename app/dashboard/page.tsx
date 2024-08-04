@@ -20,13 +20,17 @@ export default async function Dashboard({
   );
   return (
     <div>
-      <div className="z-40">
+      <div className="z-40 mb-5">
         <div className="mt-6 ml-6">
           <h1 className="text-xl">Hey! {user?.email}</h1>
         </div>
       </div>
       <Suspense fallback={<Spinner />}>
-        <MovieList movies={filteredMovies} showFavouriteButton={!!user} />
+        <MovieList
+          title="Explore the world of movies!"
+          movies={filteredMovies}
+          showFavouriteButton={!!user}
+        />
       </Suspense>
     </div>
   );

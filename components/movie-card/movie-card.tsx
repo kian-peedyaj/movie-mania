@@ -7,7 +7,7 @@ import { RemoveButton } from "./remove-button";
 import { useRouter } from "next/navigation";
 import { FavoritesButton } from "./favorites-button";
 
-const MovieCard: React.FC<{
+export const MovieCard: React.FC<{
   movie: Movie;
   showAddButton?: boolean;
   showRemoveButton?: boolean;
@@ -26,7 +26,7 @@ const MovieCard: React.FC<{
 
   const handleCardClick = () => {
     const movieData = encodeURIComponent(JSON.stringify(movie));
-    router.push(`/movie/${movie.id}?data=${movieData}&btn=collection`);
+    router.push(`../movie/${movie.id}?data=${movieData}&btn=collection`);
   };
   const buttonClasses =
     "absolute top-0 right-0 size-sm bg-background opacity-50 text-foreground hover:bg-background hover:opacity-80";
@@ -54,10 +54,9 @@ const MovieCard: React.FC<{
         )}
 
         <div className="p-2 bg-slate-700 bg-opacity-40 text-white">
-          {movie.title}
+          <p className="text-ellipsis line-clamp-1">{movie.title}</p>
         </div>
       </Card>
     </div>
   );
 };
-export default MovieCard;
