@@ -16,8 +16,9 @@ export const TmdbMovies = async ({ query }: { query: string }) => {
     { title: "Popular", movies: popular },
   ];
 
-  return moviesStack.map(({ title, movies }) => (
+  return moviesStack.map(({ title, movies }, index) => (
     <MovieList
+      key={index}
       title={title}
       movies={movies}
       showAddButton={is_admin}
