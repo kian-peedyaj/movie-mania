@@ -11,10 +11,13 @@ export default async function Favourites({
     page?: string;
   };
 }) {
+  const query = searchParams?.query || "";
   const favouriteMovies = (await getUsersFavouriteMovies()) || [];
   const movies = await fetchMovies();
-  const filteredMovies = movies.filter((movie) =>
-    favouriteMovies?.includes(movie?.id)
+  const filteredMovies = movies.filter(
+    (movie) =>
+      favouriteMovies?.includes(movie?.id) &&
+      movie?.title?.toLowerCase()?.includes(query.toLowerCase())
   );
   return (
     <MovieList
