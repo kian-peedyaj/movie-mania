@@ -1,9 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export function LoginButton() {
   const router = useRouter();
+  const pathname = usePathname();
+  if (pathname === "/login") return null;
 
   return (
     <Button

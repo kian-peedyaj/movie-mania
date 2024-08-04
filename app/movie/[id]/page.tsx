@@ -7,7 +7,6 @@ import Image from "next/image";
 import { ArrowLeftIcon } from "lucide-react";
 import { AddButton } from "@/components/movie-card/add-button";
 import { getIsAdmin } from "@/utils/supabase/supa-helper";
-import { FavoritesButton } from "@/components/movie-card/favorites-button";
 
 const MovieDisplayPage = () => {
   const router = useRouter();
@@ -45,7 +44,8 @@ const MovieDisplayPage = () => {
   };
 
   return (
-    <div className="bg-opacity-30 min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6">
+    // <div className="bg-opacity-30 min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6">
+    <div className="bg-background min-h-screen text-foreground">
       <header className="mb-6 flex items-center justify-between">
         <button
           onClick={handleBackClick}
@@ -54,17 +54,7 @@ const MovieDisplayPage = () => {
           <ArrowLeftIcon className="w-5 h-5 mr-2" />
           <span className="text-lg font-medium">Back</span>
         </button>
-        {isAdmin ? (
-          <AddButton movie={movie} caption="Add to Collection" />
-        ) : (
-          <FavoritesButton
-            id={movie.id}
-            // showCaption
-            isFavourite={isFavourite}
-            // favourites={favourites}
-            // getFavourites={getFavourites}
-          />
-        )}
+        {isAdmin && <AddButton movie={movie} caption="Add to Collection" />}
       </header>
       <main className="p-6">
         <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>

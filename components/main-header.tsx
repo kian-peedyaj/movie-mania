@@ -11,7 +11,10 @@ export default async function MainHeader() {
   return (
     <header className="flex flex-col sticky top-0 z-50 bg-muted  shadow-md">
       <div className="flex items-center px-6 py-3">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2 font-semibold"
+        >
           <Clapperboard className="h-6 w-6" />
           <span className="">Movie Mania</span>
         </Link>

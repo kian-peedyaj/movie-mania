@@ -1,7 +1,7 @@
 // "use client";
 import { Movie } from "@/types/common";
 import { getUsersFavouriteMovies } from "@/utils/supabase/tables/favourites-server";
-import { getIsAdmin } from "@/utils/supabase/supa-helper-server";
+import { getIsAdmin, getUser } from "@/utils/supabase/supa-helper-server";
 import { fetchMovies } from "@/utils/supabase/tables/movies-server";
 import MovieCard from "@/components/movie-card/movie-card";
 import { SearchBox } from "@/components/search-box";
@@ -17,5 +17,15 @@ export default async function Dashboard({
   };
 }) {
   const query = searchParams?.query || "";
-  return <MainTabs query={query} />;
+  const user = await getUser();
+  return (
+    <div>
+      <div className="z-40">
+        <div className="my-6 ml-1">
+          <h1 className="text-xl">Hey! {user?.email}</h1>
+        </div>
+      </div>
+      <MainTabs query={query} />
+    </div>
+  );
 }

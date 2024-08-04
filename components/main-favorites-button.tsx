@@ -1,15 +1,20 @@
-"use server";
-import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+"use client";
+import { Heart, Home } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export async function MainFavoritesButton() {
+export function MainFavoritesButton() {
+  const pathname = usePathname();
+  const isOnFavouritesPage = pathname === "/dashboard/favourites";
+  const hrefLink = isOnFavouritesPage ? "/dashboard" : "/dashboard/favourites";
+
   return (
-    <Button
-      variant="default"
-      size="icon"
-      className="h-8 w-full border-0 bg-transparent hover:bg-transparent p-2"
-    >
-      <Heart fill="red" color="red" className="h-6 w-6" />
-    </Button>
+    <Link href={hrefLink} className="my-auto mx-3">
+      {isOnFavouritesPage ? (
+        <Home className="h-6 w-6" />
+      ) : (
+        <Heart fill="red" color="red" className="h-6 w-6" />
+      )}
+    </Link>
   );
 }

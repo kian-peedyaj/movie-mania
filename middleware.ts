@@ -1,8 +1,21 @@
-import { type NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
+import { getIsAdmin } from "./utils/supabase/supa-helper-server";
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  const updatedRequest = await updateSession(request);
+  const url = request.nextUrl.clone();
+  const adminUser = await getIsAdmin();
+  const adminURL = url.pathname.includes("/admin");
+  if (adminUser !== adminURL) {
+    if (adminUser) {
+      url.pathname = "/dashboard/admin";
+    } else {
+      url.pathname = "/dashboard";
+    }
+    return NextResponse.redirect(url);
+  }
+  return updatedRequest;
 }
 
 export const config = {

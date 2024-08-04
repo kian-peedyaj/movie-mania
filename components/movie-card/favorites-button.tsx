@@ -7,7 +7,8 @@ import {
 } from "@/utils/supabase/tables/favourites";
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { Spinner } from "../ui-expansion/spinner";
 
 export const FavoritesButton: React.FC<{
   id: number;
@@ -18,10 +19,12 @@ export const FavoritesButton: React.FC<{
 }> = ({ id, customClasses = "", caption = "", isFavourite, favourites }) => {
   const { showToast } = useCustomToast();
   const router = useRouter();
+  const [isPending, setIsPending] = useState(false);
   const toggleFavourite = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.stopPropagation();
+    setIsPending(true);
     let response = { isSuccess: false, message: "" };
     if (isFavourite) {
       response = await removeFromFavourites(id, favourites);
@@ -33,17 +36,25 @@ export const FavoritesButton: React.FC<{
     showToast({
       description: response?.message,
     });
+
     router.refresh();
+    setIsPending(false);
   };
 
   return (
     <Button onClick={toggleFavourite} className={customClasses}>
-      {isFavourite ? (
-        <Heart fill="red" color="red" className="h-6 w-6" />
+      {isPending ? (
+        <Spinner size={"small"} />
       ) : (
-        <Heart className="h-6 w-6" />
-      )}{" "}
-      {caption}
+        <>
+          {isFavourite ? (
+            <Heart fill="red" color="red" className="h-6 w-6" />
+          ) : (
+            <Heart className="h-6 w-6" />
+          )}{" "}
+          {caption}
+        </>
+      )}
     </Button>
   );
 };

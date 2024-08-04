@@ -14,7 +14,6 @@ const MovieCard: React.FC<{
   showFavouriteButton?: boolean;
   isFavourite?: boolean;
   favourites?: Array<number>;
-  // getFavourites: Function;
 }> = ({
   movie,
   showAddButton = false,
@@ -22,7 +21,6 @@ const MovieCard: React.FC<{
   showFavouriteButton = false,
   isFavourite = false,
   favourites = [],
-  // getFavourites = () => {},
 }) => {
   const router = useRouter();
 
@@ -45,15 +43,16 @@ const MovieCard: React.FC<{
           <AddButton movie={movie} customClasses={buttonClasses} />
         )}
         {showRemoveButton && <RemoveButton id={movie.id} />}
+
         {showFavouriteButton && (
           <FavoritesButton
             id={movie.id}
             customClasses={buttonClasses}
             isFavourite={isFavourite}
             favourites={favourites}
-            // getFavourites={getFavourites}
           />
         )}
+
         <div className="p-2 bg-slate-700 bg-opacity-40 text-white">
           {movie.title}
         </div>

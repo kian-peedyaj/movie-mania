@@ -16,9 +16,12 @@ const MovieList: React.FC<{
   showFavouriteButton = false,
 }) => {
   const favouriteMovies = (await getUsersFavouriteMovies()) || [];
+
   return (
     <div>
-      <SearchBox />
+      <div className="mx-6 my-4">
+        <SearchBox />
+      </div>
       <div className="flex flex-wrap flex-row m-4">
         {movies?.map((movie: Movie) => {
           const isFavourite = favouriteMovies?.includes(movie?.id) || false;
