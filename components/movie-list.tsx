@@ -22,8 +22,8 @@ const MovieList: React.FC<{
   const favouriteMovies = (await getUsersFavouriteMovies()) || [];
 
   return (
-    <div className="mt-8">
-      <h1 className="text-2xl mx-6 my-4 font-extrabold text-stone-600">
+    <div className="mt-4">
+      <h1 className="text-2xl mx-6 mb-4 font-extrabold text-stone-600 dark:text-slate-50">
         {title}
       </h1>
       {!hideSearch && (

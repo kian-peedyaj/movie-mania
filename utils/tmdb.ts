@@ -47,7 +47,8 @@ const search = async (query: string = "", page: number = 1) => {
       .env
       .NEXT_PUBLIC_TMDB_API_KEY!}&query=${query}&include_adult=false&language=en-US&page=${page}`
   );
-  return response;
+  const { results } = await response.json();
+  return results;
 };
 
 const tmdb = {

@@ -17,20 +17,37 @@ export const TmdbMovies = async ({ query }: { query: string }) => {
     { title: "Popular", movies: popular },
   ];
 
-  
+  let results: any = [];
+  console.log("@@@ query");
+  if (query?.length > 2) {
+    results = await tmdb.search(query);
+  }
+  console.log("@@@ results", results);
 
   return (
-    <>
-      {moviesStack.map(({ title, movies }, index) => (
+    <div className="pt-6">
+      <SearchBox tmdb placeholder="Explore TMDB" />
+      {results?.length > 0 ? (
         <MovieList
-          key={index}
-          title={title}
-          movies={movies}
+          title="Search Results"
+          movies={results}
           showAddButton={is_admin}
           hideSearch
         />
-      ))}
-      ;
-    </>
+      ) : (
+        <>
+          {query && <p className="ml-2 mt-2 mb-8">Sorry, nothing found!</p>}
+          {moviesStack.map(({ title, movies }, index) => (
+            <MovieList
+              key={index}
+              title={title}
+              movies={movies}
+              showAddButton={is_admin}
+              hideSearch
+            />
+          ))}
+        </>
+      )}
+    </div>
   );
 };
