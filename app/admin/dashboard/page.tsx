@@ -15,7 +15,7 @@ export default async function Dashboard({
     <div>
       <div className="z-40">
         <div className="my-6 ml-1">
-          <h1 className="text-xl">Hey! {user?.email}</h1>
+          <h1 className="text-xl font-light">Hey! {user?.email}</h1>
         </div>
       </div>
       <MainTabs query={query} />

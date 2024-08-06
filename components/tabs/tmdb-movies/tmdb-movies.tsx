@@ -1,6 +1,7 @@
 import MovieList from "@/components/movie-list";
 import tmdb from "@/utils/tmdb";
 import { getIsAdmin } from "@/utils/supabase/supa-helper-server";
+import { SearchBox } from "@/components/search-box";
 
 export const TmdbMovies = async ({ query }: { query: string }) => {
   const nowPlaying = (await tmdb.fetchNowPlaying()) || [];
@@ -16,13 +17,20 @@ export const TmdbMovies = async ({ query }: { query: string }) => {
     { title: "Popular", movies: popular },
   ];
 
-  return moviesStack.map(({ title, movies }, index) => (
-    <MovieList
-      key={index}
-      title={title}
-      movies={movies}
-      showAddButton={is_admin}
-      hideSearch
-    />
-  ));
+  
+
+  return (
+    <>
+      {moviesStack.map(({ title, movies }, index) => (
+        <MovieList
+          key={index}
+          title={title}
+          movies={movies}
+          showAddButton={is_admin}
+          hideSearch
+        />
+      ))}
+      ;
+    </>
+  );
 };

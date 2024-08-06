@@ -1,20 +1,31 @@
 "use client";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { ChangeEvent } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button } from "./ui/button";
+import { useState } from "react";
 
-// type SearchBoxProps = {
-//   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-// };
+type SearchBoxProps = {
+  onSearchClick?: (query: string) => void;
+  tmdb?: boolean;
+  placeholder?: string;
+};
 
-// export const SearchBox: React.FC<SearchBoxProps> = (props: SearchBoxProps) => {
-export const SearchBox = () => {
+export const SearchBox: React.FC<SearchBoxProps> = ({
+  tmdb,
+  onSearchClick,
+  placeholder,
+}) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const [value, setValue] = useState<string>(
+    searchParams.get("query")?.toString() || ""
+  );
 
   function handleSearch(term: string) {
+    setValue(term);
+    if (tmdb) return;
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set("query", term);
@@ -30,11 +41,16 @@ export const SearchBox = () => {
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search"
+          placeholder={placeholder || "What's on your mind?"}
           className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
           onChange={(e) => handleSearch(e.target.value)}
-          defaultValue={searchParams.get("query")?.toString()}
+          value={value}
         />
+        {tmdb && (
+          <Button size="sm" onClick={() => onSearchClick?.(value)}>
+            Search
+          </Button>
+        )}
       </div>
     </div>
   );

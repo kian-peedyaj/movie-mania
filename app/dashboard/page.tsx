@@ -22,7 +22,7 @@ export default async function Dashboard({
     <div>
       <div className="z-40 mb-5">
         <div className="mt-6 ml-6">
-          <h1 className="text-xl">Hey! {user?.email}</h1>
+          <h1 className="text-xl font-light">Hey! {user?.email}</h1>
         </div>
       </div>
       <Suspense fallback={<Spinner />}>

@@ -6,14 +6,23 @@ import { LockKeyhole } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui-expansion/spinner";
 import { createClient } from "@/utils/supabase/server";
-import { getIsAdmin } from "@/utils/supabase/supa-helper-server";
+import { getIsAdmin, getUser } from "@/utils/supabase/supa-helper-server";
 import { LoginTestToggle } from "./login-test-toggle";
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  const user = await getUser();
+  if (user) {
+    if (await getIsAdmin()) {
+      redirect("/admin/dashboard");
+    } else {
+      redirect("/dashboard");
+    }
+  }
+
   const signIn = async (formData: FormData) => {
     "use server";
 

@@ -16,7 +16,7 @@ export default async function MainHeader() {
           className="flex items-center gap-2 font-semibold"
         >
           <Clapperboard className="h-6 w-6" />
-          <span className="">Movie Mania</span>
+          <span className="text-lg font-semibold">Movie Mania</span>
         </Link>
         <div className="ml-auto flex">
           {user && (

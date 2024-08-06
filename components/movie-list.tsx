@@ -23,7 +23,9 @@ const MovieList: React.FC<{
 
   return (
     <div className="mt-8">
-      <h1 className="text-2xl mx-6 my-4 font-extrabold">{title}</h1>
+      <h1 className="text-2xl mx-6 my-4 font-extrabold text-stone-600">
+        {title}
+      </h1>
       {!hideSearch && (
         <div className="mx-6 my-4">
           <SearchBox />

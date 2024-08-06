@@ -41,5 +41,20 @@ const fetchPopular = async () => await fetchFromTMBD(REQUEST_TYPE.Popular);
 const fetchTopRated = async () => await fetchFromTMBD(REQUEST_TYPE.Top_Rated);
 const fetchUpcoming = async () => await fetchFromTMBD(REQUEST_TYPE.Upcoming);
 
-const tmdb = { fetchNowPlaying, fetchPopular, fetchTopRated, fetchUpcoming };
+const search = async (query: string = "", page: number = 1) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_TMDB_API_URL!}/3/search/movie?api_key=${process
+      .env
+      .NEXT_PUBLIC_TMDB_API_KEY!}&query=${query}&include_adult=false&language=en-US&page=${page}`
+  );
+  return response;
+};
+
+const tmdb = {
+  fetchNowPlaying,
+  fetchPopular,
+  fetchTopRated,
+  fetchUpcoming,
+  search,
+};
 export default tmdb;
